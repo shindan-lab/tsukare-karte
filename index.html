@@ -326,28 +326,11 @@ function calc() {
 
 function share(main) {
   const url = 'https://shindan-lab.github.io/tsukare-karte/';
-  return `私の疲れ方は「${T[main][0]}」でした。\n頑張り方の癖まで見抜かれて、ちょっと黙りました。\n\n▼疲れのカルテ\n${url}\n\n#疲れのカルテ #診断Lab`;
+  return `私は「${T[main][0]}」でした。あなたの疲れのタイプを診断。\n\n▼疲れのカルテ\n${url}\n\n#疲れのカルテ #診断Lab`;
 }
 
-let currentSummary = '';
-
 function ensureDynamicBlocks() {
-  const presCard = document.getElementById('pres').closest('.card');
   const affCard = document.getElementById('aff');
-
-  if (!document.getElementById('summary-card')) {
-    const summary = document.createElement('div');
-    summary.id = 'summary-card';
-    summary.className = 'card';
-    summary.style.background = '#F8F4F1';
-    summary.innerHTML = `
-      <div class="label">ひとことで言うと</div>
-      <div id="summary-text" style="line-height:1.9;font-weight:700"></div>
-      <button id="copy-summary-btn" class="btn" type="button" style="margin-top:14px;background:#fff;color:#7A5C52;border:1px solid #E8D5CE">結果を短くコピー</button>
-    `;
-    presCard.insertAdjacentElement('afterend', summary);
-    summary.querySelector('#copy-summary-btn').addEventListener('click', copySummary);
-  }
 
   if (!document.getElementById('next-card-dynamic')) {
     const existingNext = affCard.previousElementSibling && affCard.previousElementSibling.classList.contains('card')
@@ -386,30 +369,6 @@ function renderNext(main) {
       <div class="sub">${item.desc}</div>
     </a>
   `).join('');
-}
-
-async function copySummary() {
-  if (!currentSummary) return;
-  const button = document.getElementById('copy-summary-btn');
-  const original = button.textContent;
-  try {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      await navigator.clipboard.writeText(currentSummary);
-    } else {
-      const area = document.createElement('textarea');
-      area.value = currentSummary;
-      document.body.appendChild(area);
-      area.select();
-      document.execCommand('copy');
-      area.remove();
-    }
-    button.textContent = 'コピーしました';
-  } catch (error) {
-    button.textContent = 'コピーできませんでした';
-  }
-  setTimeout(() => {
-    button.textContent = original;
-  }, 1600);
 }
 
 let i = 0;
@@ -477,8 +436,6 @@ function show() {
 
   document.getElementById('letter').textContent = main[3];
   document.getElementById('pres').textContent = main[4];
-  currentSummary = `今の私は「${main[0]}」。${main[1]}`;
-  document.getElementById('summary-text').textContent = currentSummary;
   renderNext(result.main);
 
   const affiliate = (
