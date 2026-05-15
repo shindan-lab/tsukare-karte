@@ -38,6 +38,8 @@
     .fill{height:100%;background:#C1714A}
     .pill{display:inline-block;background:#FDF0EB;border:1px solid #E8D5CE;border-radius:999px;padding:4px 12px;color:#C1714A;font-size:13px}
     .label{font-size:11px;letter-spacing:.14em;color:#C1714A;font-weight:700;margin-bottom:10px}
+    .result-image-card{padding:10px;background:#fff}
+    .result-image-card img{display:block;width:100%;height:auto;border-radius:16px}
     .hero{padding-top:40px}
     .h1{font-size:32px;font-weight:700;margin:0 0 8px}
     .result-header-card{border-radius:20px;padding:36px 24px 32px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden;color:#fff}
@@ -93,6 +95,9 @@
         <div class="result-header-icon" id="result-icon"></div>
         <div class="result-header-eyebrow">あなたの疲れタイプ</div>
         <h2 class="result-type-name" id="result-type-name"></h2>
+      </div>
+      <div class="card result-image-card">
+        <img id="result-type-image" src="" alt="">
       </div>
       <div class="card">
         <div class="label">診断結果</div>
@@ -301,6 +306,17 @@ const AFF_HINT = {
   H: 'ぼんやりした消耗を見える形にしたいときの補助として置いています。'
 };
 
+const TYPE_IMAGE = {
+  A: 'type-image-A-v1.png',
+  B: 'type-image-B-v1.png',
+  C: 'type-image-C-v1.png',
+  D: 'type-image-D-v1.png',
+  E: 'type-image-E-v1.png',
+  F: 'type-image-F-v1.png',
+  G: 'type-image-G-v1.png',
+  H: 'type-image-H-v1.png'
+};
+
 const TYPE_MAX = { A: 24, B: 17, C: 18, D: 20, E: 18, F: 13, G: 10, H: 20 };
 
 function calc() {
@@ -431,6 +447,8 @@ function show() {
   document.getElementById('result-bg-letter').textContent = result.main;
   document.getElementById('result-icon').innerHTML = typeIcons[result.main];
   document.getElementById('result-type-name').textContent = main[0];
+  document.getElementById('result-type-image').src = TYPE_IMAGE[result.main];
+  document.getElementById('result-type-image').alt = `${main[0]}のイメージ画像`;
   document.getElementById('headline').textContent = main[1];
   document.getElementById('body').innerHTML = main[2].split('\n\n').map((paragraph) => `<p>${paragraph}</p>`).join('');
 
